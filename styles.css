@@ -1,0 +1,12 @@
+body {
+    background: rgb(240, 240, 240);
+}
+
+h4 {
+    color: rgb(97, 97, 240);
+    font-size: 2.5rem;
+}
+
+.dev-title {
+    font-family: 'Lobster', cursive;
+}
