@@ -14,7 +14,7 @@
         <h1 class="registration text-center">Registration</h1>
         <div class="row text-center align-items-center justify-content-center">
             <div class="col-6">
-                <form id="regForm" action="https://localhost:44312/api/persons" method="Post">
+                <form id="regForm" action="https://localhost:44312/api/persons" method="post" enctype="multipart/form-dat">
                     <div class="form-group row">
                       <label for="firstName" class="col-sm-2 col-form-label">First&nbsp;name</label>
                       <div class="col-sm-10">
@@ -76,17 +76,18 @@
                 /* stop form from submitting normally */
                 event.preventDefault();
 
+
                 /* get the action attribute from the <form action=""> element */
                 var $form = $(this),
                 url = $form.attr('action');
 
                 /* Send the data using post with element id name and name2*/
-                var posting = $.post(url, {
+                var posting = $.post(url,{
                 firstName: $('#firstName').val(),
-                lastName2: $('#lastName').val(),
+                lastName: $('#lastName').val(),
                 address: $('#address').val(),
-                phoneNumber: $('#phoneNumber').val()
-                });
+                phoneNumber: $('#phoneNumber').val(),
+                },);
 
                 /* Alerts the results */
                 posting.done(function(data) {
