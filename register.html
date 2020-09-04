@@ -14,7 +14,7 @@
         <h1 class="registration text-center">Registration</h1>
         <div class="row text-center align-items-center justify-content-center">
             <div class="col-6">
-                <form>
+                <form id="regForm" action="https://localhost:44312/api/persons" method="Post">
                     <div class="form-group row">
                       <label for="firstName" class="col-sm-2 col-form-label">First&nbsp;name</label>
                       <div class="col-sm-10">
@@ -59,6 +59,7 @@
                       <br>
                       <br>
                       <a href="index.html" class="mt-4 register ">Sign in</a>
+                      <p id="result"></p>
                   </form>
             </div>
         </div>
@@ -67,5 +68,34 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        /* attach a submit handler to the form */
+        $("#regForm").submit(function(event) {
+
+                /* stop form from submitting normally */
+                event.preventDefault();
+
+                /* get the action attribute from the <form action=""> element */
+                var $form = $(this),
+                url = $form.attr('action');
+
+                /* Send the data using post with element id name and name2*/
+                var posting = $.post(url, {
+                firstName: $('#firstName').val(),
+                lastName2: $('#lastName').val(),
+                address: $('#address').val(),
+                phoneNumber: $('#phoneNumber').val()
+                });
+
+                /* Alerts the results */
+                posting.done(function(data) {
+                $('#result').text('success');
+                });
+                posting.fail(function() {
+                $('#result').text('failed');
+                });
+                });
+    </script>
 </body>
 </html>
