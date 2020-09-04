@@ -13,53 +13,53 @@
     <div class="container text center">
         <h1 class="registration text-center">Registration</h1>
         <div class="row text-center align-items-center justify-content-center">
-            <div class="col-6">
-                <form id="regForm" action="https://localhost:44312/api/persons" method="post" enctype="multipart/form-dat">
+            <div class="col-md-6">
+                <form id="regForm">
                     <div class="form-group row">
-                      <label for="firstName" class="col-sm-2 col-form-label">First&nbsp;name</label>
+                      <label for="firstName" class="col-sm-2 col-form-label firstName">First&nbsp;name</label>
                       <div class="col-sm-10">
-                        <input type="text" class="form-control" id="firstName">
+                        <input type="text" name="firstName" class="form-control" id="firstName" value="">
                       </div>
                     </div>
                     <div class="form-group row">
-                        <label for="lastName" class="col-sm-2 col-form-label">Last&nbsp;name</label>
+                        <label for="lastName" class="col-sm-2 col-form-label lastName">Last&nbsp;name</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="lastName">
+                          <input type="text" name="lastName" class="form-control" id="lastName" value="">
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="address" class="col-sm-2 col-form-label">Address</label>
+                        <label for="address" class="col-sm-2 col-form-label address">Address</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="address">
+                          <input type="text" name="address" class="form-control" id="address" value="">
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="phoneNumber" class="col-sm-2 col-form-label">Phone&nbsp;no.</label>
+                        <label for="phoneNumber" class="col-sm-2 col-form-label phoneNumber">Phone&nbsp;no.</label>
                         <div class="col-sm-8">
-                          <input type="number" class="form-control" id="phoneNumber">
+                          <input type="number" name="phoneNumber" class="form-control" id="phoneNumber" value="">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                         <div class="col-sm-5">
-                          <input type="password" class="form-control" id="inputPassword">
+                          <input type="password" name="inputPassword" class="form-control" id="inputPassword">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="re-inputPassword" class="col-sm-2 col-form-label">Confirm</label>
                         <div class="col-sm-5">
-                          <input type="password" class="form-control" id="re-inputPassword">
+                          <input type="password" name="re-inputPassword" class="form-control" id="re-inputPassword">
                         </div>
                       </div>
                       <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label" for="exampleCheck1">Check me in</label>
                       </div>
-                      <button type="submit" class="btn btn-outline-primary regcol">Register</button>
+                      <button type="submit" value="send" class="btn btn-outline-primary regcol">Register</button>
                       <br>
                       <br>
                       <a href="index.html" class="mt-4 register ">Sign in</a>
-                      <p id="result"></p>
+                      
                   </form>
             </div>
         </div>
@@ -70,33 +70,128 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        /* attach a submit handler to the form */
-        $("#regForm").submit(function(event) {
+      var request;
 
-                /* stop form from submitting normally */
-                event.preventDefault();
+      $(document).ready(
+        
+        $("#regForm").submit(function(event){
+
+          event.preventDefault();
+
+          if(request) {
+            request.abort();
+          }
+
+          var $form = $(this);
+
+          var $inputs = $form.find("input, select, button, textarea");
+
+          var serializedData = $form.serialize();
+
+          $inputs.prop("disabled", true);
+
+          request = $.ajax({
+            type: "POST",
+            url: "https://localhost:44312/api/persons",
+            contentType: "application/json; charset=utf-8",  
+            dataType: "json",
+            data: serializedData
+          });
+          request.done(function (response, textstatus, jqXHR){
+            console.error(
+              "Hooray it worked"
+            )
+          });
+          request.fail(function (jqXHR, textstatus, errorThrown){
+            console.error(
+              "the following error occurred :"  + textstatus, errorThrown 
+            );
+          });
+          request.always(function( ) {
+            $inputs.prop("disabled", false);
+          });
+        })
+
+      );
 
 
-                /* get the action attribute from the <form action=""> element */
-                var $form = $(this),
-                url = $form.attr('action');
+      // const myForm = document.getElementById("myForm");
 
-                /* Send the data using post with element id name and name2*/
-                var posting = $.post(url,{
-                firstName: $('#firstName').val(),
-                lastName: $('#lastName').val(),
-                address: $('#address').val(),
-                phoneNumber: $('#phoneNumber').val(),
-                },);
+      // myForm.addEventListener('submit', function () {
 
-                /* Alerts the results */
-                posting.done(function(data) {
-                $('#result').text('success');
-                });
-                posting.fail(function() {
-                $('#result').text('failed');
-                });
-                });
+      //   event.preventDefault();
+
+      //   fetch("https://localhost:44312/api/persons", {
+      //       method: 'POST',
+      //       header: {
+      //         'content-type': 'application/json; charset=utf-8',
+      //          dataType: "json"
+      //       },
+      //       body: JSON.stringify({
+      //         firstName: firstName = document.getElementsByClassName("firstName").value,
+      //         lastName: lastName = document.getElementsByClassName("lastName").value,
+      //         address: address = document.getElementsByClassName("address").value,
+      //         phoneNumber: phone = document.getElementsByClassName("phoneNumber").value
+      //       })
+      //     })
+      //     .then(response => {
+      //       if (!response.ok){
+      //         throw Error("Error");
+      //       }
+      //       return response.json();
+      //     })
+      //     .then(data => {
+      //       console.log(data);
+      //     })
+      //     .catch(error => {
+      //       console.log(error)
+      //     });
+          
+          
+      // });
+
+      
+
+
+
+        // function postData(event) {
+        //   let firstName = document.getElementById("#firstName");
+        //   let lastName = document.getElementById('#lastName');
+        //   let address = document.getElementById('#address');
+        //   let phoneNumber = document.getElementById('#phoneNumber');
+
+        //   console.log(firstName, lastName);
+
+        //   if( firstName === null && lastName === null && address === null && phoneNumber === null) {
+        //     fetch("https://localhost:44312/api/persons", {
+        //     method: 'POST',
+        //     header: {
+        //       'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //       firstName: 'Mikel',
+        //       lastName: 'scofiel',
+        //       address: '22 bane road',
+        //       phoneNumber: '0908876'
+        //     })
+        //   })
+        //   .then(response => {
+        //     if (!response.ok){
+        //       throw Error("Error");
+        //     }
+        //     return response.json();
+        //   })
+        //   .then(data => {
+        //     console.log(data);
+        //   })
+        //   .catch(error => {
+        //     console.log(error)
+        //   });
+        //   }
+          
+        // }
+
+        // postData();
     </script>
 </body>
 </html>
