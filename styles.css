@@ -2,11 +2,28 @@ body {
     background: rgb(240, 240, 240);
 }
 
-h4 {
+.sign-in {
     color: rgb(97, 97, 240);
     font-size: 2.5rem;
+    font-family: 'Rajdhani', sans-serif;
 }
 
 .dev-title {
     font-family: 'Lobster', cursive;
+    color: steelblue;
+}
+
+.register {
+    color: steelblue;
+    font-family: 'Rajdhani', sans-serif;
+}
+
+.registration {
+    font-family: 'Rajdhani', sans-serif;
+    color: rgb(120, 40, 120);
+    font-size: 4rem;
+}
+
+.regcol {
+    color: rgb(120, 40, 120);
 }
